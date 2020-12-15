@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" type="text/css" href="font/material-icons.css"> 
+</head>
+<body> 
+
+  <section class="inicio">
+<div><button class="material-icon som">volume_off</button></div>
+<h1>Cálculo Relâmpago</h1>
+<img class="raio" src="img/raio.png">
+<p><button class="btn-iniciar">INICIAR</button></p>
+
+  </section>
+
+  <section class="jogo">
+    <header><span class="textoTempo">Tempo:&nbsp</span><h2 class="tempo"><span>0</span></h2>s
+   </header>
+
+   <header><span class="textoPonto">Pontos:&nbsp</span><h2 class="pontos"><span class="pontos">0</span></h2>
+   </header>
+
+    <div class="questão">
+      <label class="pergunta"> <span>Responda abaixo: </span><span class="conta1">0</span><span class="simbolo"> + </span><span class="conta2">0 </span></label>
+    </div>
+
+<div class="responder">
+    <button class="resposta1"><span class="resposta1">0</span></button>
+    <button class="resposta2"><span class="resposta2">0</span></button>
+    <button class="resposta3"><span class="resposta3">0</span></button>
+  </input>
+</div>
+
+  </section>
+
+  <section class="fim">
+    <div class="acertos">
+<p><h1>Número de Acertos:</h1><span class="pontos">0</span>
+</p>
+</div>
+
+<div><button onclick="history.go(0)" class="material-icon home">home</button>
+</div>
+
+  </section>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+
+function load(){
+        musicaInicio = new Audio("musica/inicio.mp3")
+      }
+
+      load();
+
+      $("section.inicio button.som").on("click", function(){
+        textoDoBotao = $(this).text();        
+        if(textoDoBotao == "volume_off"){
+          musicaInicio.play();
+          $(this).text("volume_up");
+        }else{
+          musicaInicio.pause();
+          $(this).text("volume_off");
+        }
+       });
+    
+    $("section.inicio button.btn-iniciar").on("click",function(){
+      musicaInicio.pause();
+        musicaJogo = new Audio("musica/jogo.mp3")
+        musicaJogo.play();
+    $("section").hide();
+    $("section.jogo").show();
+
+    contagemDeTempo = setInterval(function(){
+          var conteudoTempo = parseInt($("h2.tempo span").text());
+          var soma = conteudoTempo + 1;
+          $("h2.tempo span").text(soma);
+          if(conteudoTempo > 29 && conteudoTempo < 31){
+            $("section.fim span.pontos").text(pontos);
+            musicaJogo.pause();
+            musicaFinal = new Audio("musica/final.mp3")
+            musicaFinal.play();
+        $("section").hide();
+        $("section.fim").show();
+      }
+      },1000);
+    });
+
+    $("section.jogo button.proxima").on("click",function(){
+    $("section").hide();
+    $("section.fim").show();
+    });
+
+    $("section.fim button.home").on("click",function(){
+    $("section").hide();
+    $("section.inicio").show();
+    });
+
+
+    var pontos = 0;
+    
+    
+
+    
+      sorteio = setInterval(function(){
+        var n1 = Math.floor(Math.random() * 10);
+        var n2 = Math.floor(Math.random() * 10);
+        var n3 = Math.floor(Math.random() * 30);
+        var n4 = Math.floor(Math.random() * 30);
+        $("div.questão span.conta1").text(n1);
+        $("div.questão span.conta2").text(n2);
+
+if(n3<=10){
+  $("div.questão span.simbolo").text('+');
+  var conta = n1 + n2;
+}else if(n3>10 && n3<=20){
+  $("div.questão span.simbolo").text('-');
+  var conta = n1 - n2;
+}else{
+  $("div.questão span.simbolo").text('x');
+  var conta = n1 * n2;
+}
+
+
+if(n4<=10){
+  $("div.responder span.resposta1").text(conta);
+  $("div.responder span.resposta2").text(Math.floor(Math.random() * 35) + Math.floor(Math.random() * 35));
+  $("div.responder span.resposta3").text(Math.floor(Math.random() * 35) + Math.floor(Math.random() * 35));
+
+
+  $("div.responder button.resposta1").one("click", function(){
+    pontos += 1;
+    musicaCerto = new Audio("musica/certo.mp3")
+    musicaCerto.play();
+    $("section.jogo span.pontos").text(pontos);
+  });
+
+
+}else if(n4>10 && n4<=20){
+  $("div.responder span.resposta2").text(conta);
+  $("div.responder span.resposta1").text(Math.floor(Math.random() * 35) + Math.floor(Math.random() * 35));
+  $("div.responder span.resposta3").text(Math.floor(Math.random() * 35) + Math.floor(Math.random() * 35));
+
+  $("div.responder button.resposta2").one("click", function(){
+    pontos += 1;
+    musicaCerto = new Audio("musica/certo.mp3")
+    musicaCerto.play();
+    $("section.jogo span.pontos").text(pontos);
+  });
+
+  
+  
+}else if(n4>20){
+  $("div.responder span.resposta3").text(conta);
+  $("div.responder span.resposta1").text(Math.floor(Math.random() * 35) + Math.floor(Math.random() * 35));
+  $("div.responder span.resposta2").text(Math.floor(Math.random() * 35) + Math.floor(Math.random() * 35));
+
+  $("div.responder button.resposta3").one("click", function(){
+    pontos += 1;
+    musicaCerto = new Audio("musica/certo.mp3")
+    musicaCerto.play();
+    $("section.jogo span.pontos").text(pontos);
+  });
+  
+  
+}
+
+
+},3000);
+
+
+
+  </script>
+  <script src="js/plugins.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+</html>
